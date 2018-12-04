@@ -27,8 +27,9 @@ export default class Customer extends Component {
     onSendMessage = () => {
         this.ref.add({
             message: this.state.text,
-            
+
             target: this.state.target
+            //helooo
         });
     }
 
