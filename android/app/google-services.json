@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "210176925311",
+    "firebase_url": "https://cleverrestaurant.firebaseio.com",
+    "project_id": "cleverrestaurant",
+    "storage_bucket": "cleverrestaurant.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210176925311:android:e2e3dcf700f00504",
+        "android_client_info": {
+          "package_name": "com.cleverrestaurant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210176925311-3rq4a0avoe3qqha6osvj283ds70vr15j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHQPJzFU6VeKsPiaCQiitAMmKdFrbo3f8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
