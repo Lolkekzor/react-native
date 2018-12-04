@@ -29,6 +29,7 @@ export default class Customer extends Component {
             message: this.state.text,
             
             target: this.state.target
+            // hello from tosa
         });
     }
 
