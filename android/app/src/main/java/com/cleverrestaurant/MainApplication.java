@@ -14,6 +14,8 @@ import com.reactnativenavigation.react.ReactGateway;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
+import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +45,8 @@ public class MainApplication extends NavigationApplication {
             // eg. new VectorIconsPackage()
             new RNFirebasePackage(),
             new RNFirebaseFirestorePackage(),
-            new RNFirebaseAuthPackage()
+            new RNFirebaseAuthPackage(),
+            new RNFusedLocationPackage()
         );
     }
   
