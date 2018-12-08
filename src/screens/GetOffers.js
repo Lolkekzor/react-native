@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, PermissionsAndroid } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import firebase from 'react-native-firebase';
 
-import Geolocation from 'react-native-geolocation-service';
+import PositionProvider from '../components/function/PositionProvider';
 
 export default class GetOffers extends Component {
     constructor() {
@@ -11,7 +11,6 @@ export default class GetOffers extends Component {
     }
 
     state = {
-        
         initialPos: {
             latitude: 0,
             longitude: 0
@@ -30,52 +29,23 @@ export default class GetOffers extends Component {
     }
 
     componentDidMount() {
-        
-        PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-            {
-                'title': 'Location Permission',
-                'message': 'Allow app to access your location?'
-            }
-        ).then(granted => {
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                Geolocation.getCurrentPosition(pos => {
-                    this.setState(
-                        {
-                            initialPos: {
-                                latitude: pos.coords.latitude,
-                                longitude: pos.coords.longitude
-                            }
-                        }
-                    );
-                }, error => alert(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
-                this.watchID = Geolocation.watchPosition(pos => {
-                    console.log(pos);
-                    this.setState(
-                        {
-                            currentPos: {
-                                latitude: pos.coords.latitude,
-                                longitude: pos.coords.longitude
-                            }
-                        }
-                    );
-                }); 
-            } else {
-                console.log("Permission denied")
-            }
-        })
-        .catch(err => {
-            console.warn(err)   
-        }) 
     }
 
     componentWillUnmount() {
-        Geolocation.clearWatch(this.watchID);
+    }
+
+    updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
+        this.setState({
+            initialPos: initPos,
+            currentPos: crtPos
+        })
     }
 
     render() {
+        console.log(this.state.currentPos);
         return (
             <View style = {styles.container}>
+                <PositionProvider getPosition={this.updatePosition}/>
                 <Text style = {styles.boldText}>
                     Initial position:
                 </Text>
