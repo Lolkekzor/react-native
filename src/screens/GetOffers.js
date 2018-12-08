@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import firebase from 'react-native-firebase';
 
 import PositionProvider from '../components/function/PositionProvider';
+import Button from '../components/Button';
 
 export default class GetOffers extends Component {
     constructor() {
@@ -11,6 +12,7 @@ export default class GetOffers extends Component {
     }
 
     state = {
+        currentUser: null,
         initialPos: {
             latitude: 0,
             longitude: 0
@@ -21,23 +23,58 @@ export default class GetOffers extends Component {
         },
 
         request: {
-            id: null,
-            maxDistance: null,
-            nrPeople: null,
-            tags: []
+            id: 123,
+            maxDistance: 1,
+            pos: {
+                latitude: 0,
+                longitude: 0
+            },
+            nrPeople: 1,
+            tags: ["Vegetarian", "Affordable", "Cosy"]
         }
     }
 
     componentDidMount() {
+        this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.setState({
+                    currentUser: user,
+                    request: {
+                        ...this.state.request,
+                        id: user.uid
+                    }
+                })
+            } else {
+                firebase.auth().signInAnonymously();
+            }
+        })
+        
     }
 
     componentWillUnmount() {
+        this.unsubscribe();
     }
 
     updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
         this.setState({
             initialPos: initPos,
             currentPos: crtPos
+        })
+        this.setState({
+            request: {
+                ...this.state.request,
+                pos: this.state.currentPos
+            }
+        })
+    }
+
+    sendRequest = () => {
+        this.db.collection("requests").add(this.state.request)
+        .then(() => {
+            alert("Request has been added");
+        })
+        .catch(err => {
+            alert(err);
         })
     }
 
@@ -63,6 +100,10 @@ export default class GetOffers extends Component {
                     Latitude: {this.state.currentPos.latitude}
                     Longitude: {this.state.currentPos.longitude}
                 </Text>
+
+                <Button onPress={this.sendRequest}>
+                    Send Request
+                </Button>
             </View>
          )
     }

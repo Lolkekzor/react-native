@@ -20,6 +20,7 @@ export default class GetOffers extends Component {
     }
 
     componentDidMount() {
+
         PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
