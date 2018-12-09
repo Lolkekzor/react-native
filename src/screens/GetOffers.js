@@ -24,7 +24,7 @@ export default class GetOffers extends Component {
 
         request: {
             id: 123,
-            maxDistance: 1,
+            maxDistance: 1000,
             pos: {
                 latitude: 0,
                 longitude: 0
