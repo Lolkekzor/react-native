@@ -22,10 +22,15 @@ export default () => {
                     visible: true,
                     title: {
                       text: 'Restaurant',
-                      alignment: 'center'
+                      alignment: 'center',
+                      fontSize: 26,
+                      fontWeight: "bold",
+                      color: 'white',
+                      fontFamily: 'Helvetica',
                     },
                     backButton: {
-                      visible: true
+                      visible: true,
+                      color: "white"
                     },
                     background: {
                       color: '#D01F5B'
@@ -40,3 +45,13 @@ export default () => {
     });
   });
 }
+
+/**
+Navigation.setRoot({
+  root: {
+    component: {
+      name: "screens.RestaurantRequests",
+    }
+  }
+})
+*/
