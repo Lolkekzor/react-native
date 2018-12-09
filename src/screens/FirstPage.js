@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
+import { Navigation } from 'react-native-navigation';
 
 import PositionProvider from '../components/function/PositionProvider';
 
@@ -88,7 +89,14 @@ export default class FirstPage extends Component {
         req.timestamp = Date.now();
         this.db.collection("requests").add(req)
         .then(() => {
-            alert("Request has been added");
+            Navigation.push(this.props.componentId, {
+                component: {
+                    name: 'screens.BrowseOffers',
+                    passProps: {
+                        location: this.state.currentPos
+                    }
+                }
+            });
         })
         .catch(err => {
             alert(err);

@@ -13,8 +13,20 @@ Navigation.registerComponent('screens.BrowseOffers', () => BrowseOffers);
 export default () => {
   Navigation.setRoot({
     root: {
-      component: {
-        name: "screens.BrowseOffers",
+      stack: {
+        children: [
+          {
+            component: {
+              name: "screens.FirstPage",
+              options: {
+                topBar: {
+                  visible: false,
+                  drawBehind: true,
+                }
+              }
+            }
+          }
+        ]
       }
     }
   })
