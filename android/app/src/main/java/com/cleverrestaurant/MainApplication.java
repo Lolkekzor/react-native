@@ -15,6 +15,7 @@ import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 
 import java.util.Arrays;
@@ -46,7 +47,8 @@ public class MainApplication extends NavigationApplication {
             new RNFirebasePackage(),
             new RNFirebaseFirestorePackage(),
             new RNFirebaseAuthPackage(),
-            new RNFusedLocationPackage()
+            new RNFusedLocationPackage(),
+            new VectorIconsPackage()
         );
     }
   
