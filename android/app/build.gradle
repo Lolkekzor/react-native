@@ -168,6 +168,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:+'
 
     implementation project(':react-native-geolocation-service')
+    implementation 'com.facebook.fresco:fresco:+'
+    implementation 'com.facebook.fresco:animated-gif:+'
 }
 
 // Run this once to be able to run the application with BUCK
