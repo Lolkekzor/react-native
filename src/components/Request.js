@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import Navigation from 'react-native-navigation';
 
 import Button from './Button';
 

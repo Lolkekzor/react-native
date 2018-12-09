@@ -12,8 +12,29 @@ export default () => {
   Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setRoot({
       root: {
-        component: {
-          name: "screens.RestaurantRequests"
+        stack: {
+          children: [
+            {
+              component: {
+                name: "screens.RestaurantRequests",
+                options: {
+                  topBar: {
+                    visible: true,
+                    title: {
+                      text: 'Restaurant',
+                      alignment: 'center'
+                    },
+                    backButton: {
+                      visible: true
+                    },
+                    background: {
+                      color: '#D01F5B'
+                    }
+                  }
+                }
+              }
+            }
+          ]
         }
       }
     });
