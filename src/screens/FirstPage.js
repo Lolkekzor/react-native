@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'react-native-firebase';
+
+import PositionProvider from '../components/function/PositionProvider';
 
 export default class FirstPage extends Component {
+    constructor() {
+        super();
+        this.db = firebase.firestore();
+    }
 
     state = {
+        currentUser: null,
+        initialPos: {
+            latitude: 0,
+            longitude: 0
+        },
+        currentPos: {
+            latitude: 0,
+            longitude: 0
+        },
+
         width: 0,
         height: 0,
         x: 0,
@@ -18,7 +35,7 @@ export default class FirstPage extends Component {
                 longitude: 0
             },
             nrPeople: 1,
-            tags: []
+            tags: ["Vegetarian", "Affordable", "Cosy"]
         }
     }
 
@@ -33,7 +50,50 @@ export default class FirstPage extends Component {
         })
     }
 
-    sendRequest = () => { }
+    componentDidMount() {
+        this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.setState({
+                    currentUser: user,
+                    request: {
+                        ...this.state.request,
+                        id: user.uid
+                    }
+                })
+            } else {
+                firebase.auth().signInAnonymously();
+            }
+        })
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
+        this.setState({
+            initialPos: initPos,
+            currentPos: crtPos
+        })
+        this.setState({
+            request: {
+                ...this.state.request,
+                pos: this.state.currentPos
+            }
+        })
+    }
+
+    sendRequest = () => {
+        let req = this.state.request;
+        req.timestamp = Date.now();
+        this.db.collection("requests").add(req)
+        .then(() => {
+            alert("Request has been added");
+        })
+        .catch(err => {
+            alert(err);
+        })
+    }
 
     countPeople = (val) => {
         this.setState({
@@ -56,6 +116,7 @@ export default class FirstPage extends Component {
 
         return (
             <View style={styles.pageContainer}>
+                <PositionProvider getPosition={this.updatePosition}/>
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/food3.gif')} style={styles.imageStyle} />
                 </View>

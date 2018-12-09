@@ -12,46 +12,51 @@ export default () => {
   Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setRoot({
       root: {
-        stack: {
-          children: [
-            {
-              component: {
-                name: "screens.RestaurantRequests",
-                options: {
-                  topBar: {
-                    visible: true,
-                    title: {
-                      text: 'Restaurant',
-                      alignment: 'center',
-                      fontSize: 26,
-                      fontWeight: "bold",
-                      color: 'white',
-                      fontFamily: 'Helvetica',
-                    },
-                    backButton: {
-                      visible: true,
-                      color: "white"
-                    },
-                    background: {
-                      color: '#D01F5B'
-                    }
-                  }
-                }
-              }
-            }
-          ]
+        component: {
+          name: "screens.FirstPage",
         }
       }
-    });
+    })
   });
 }
 
 /**
+
+*/
+
+/**
 Navigation.setRoot({
   root: {
-    component: {
-      name: "screens.RestaurantRequests",
+    stack: {
+      children: [
+        {
+          component: {
+            name: "screens.RestaurantRequests",
+            options: {
+              topBar: {
+                visible: true,
+                title: {
+                  text: 'Restaurant',
+                  alignment: 'center',
+                  fontSize: 26,
+                  fontWeight: "bold",
+                  color: 'white',
+                  fontFamily: 'Helvetica',
+                },
+                backButton: {
+                  visible: true,
+                  color: "white"
+                },
+                background: {
+                  color: '#D01F5B'
+                }
+              }
+            }
+          }
+        }
+      ]
     }
   }
-})
+});
+
 */
