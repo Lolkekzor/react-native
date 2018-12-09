@@ -16,7 +16,7 @@ import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import com.agontuk.RNFusedLocation.RNFusedLocationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-
+import com.airbnb.android.react.maps.MapsPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +48,8 @@ public class MainApplication extends NavigationApplication {
             new RNFirebaseFirestorePackage(),
             new RNFirebaseAuthPackage(),
             new RNFusedLocationPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new MapsPackage()
         );
     }
   
