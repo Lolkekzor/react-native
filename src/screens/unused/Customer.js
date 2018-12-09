@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import firebase from 'react-native-firebase';
 
-import TextField from '../components/TextField';
-import Button from '../components/Button';
+import TextField from '../../components/TextField';
+import Button from '../../components/Button';
 
 export default class Customer extends Component {
     constructor() {

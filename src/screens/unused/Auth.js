@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Picker } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import firebase from 'react-native-firebase';
 
-import Button from '../components/Button';
-import TextField from '../components/TextField';
+import Button from '../../components/Button';
+import TextField from '../../components/TextField';
 
 export default class Auth extends Component {
     constructor() {

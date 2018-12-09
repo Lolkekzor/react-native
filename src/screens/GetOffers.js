@@ -24,7 +24,8 @@ export default class GetOffers extends Component {
 
         request: {
             id: 123,
-            maxDistance: 1,
+            timestamp: 1,
+            maxDistance: 1000,
             pos: {
                 latitude: 0,
                 longitude: 0
@@ -69,7 +70,9 @@ export default class GetOffers extends Component {
     }
 
     sendRequest = () => {
-        this.db.collection("requests").add(this.state.request)
+        let req = this.state.request;
+        req.timestamp = Date.now();
+        this.db.collection("requests").add(req)
         .then(() => {
             alert("Request has been added");
         })
