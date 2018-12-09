@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Modal from "react-native-modal";
 import firebase from 'react-native-firebase';
 
 import PositionProvider from '../components/function/PositionProvider';
@@ -34,9 +35,10 @@ export default class FirstPage extends Component {
                 latitude: 0,
                 longitude: 0
             },
-            nrPeople: 1,
-            tags: ["Vegetarian", "Affordable", "Cosy"]
-        }
+            nrPeople: 1
+        },
+        isModalVisible: false,
+        isPressed: [0, 0, 0, 0, 0, 0, 0]
     }
 
     onLayout = (e) => {
@@ -70,7 +72,7 @@ export default class FirstPage extends Component {
         this.unsubscribe();
     }
 
-    updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
+    updatePosition = (initPos, crtPos = { latitude: 0, longitude: 0 }) => {
         this.setState({
             initialPos: initPos,
             currentPos: crtPos
@@ -84,15 +86,23 @@ export default class FirstPage extends Component {
     }
 
     sendRequest = () => {
+        let nrOfStyles = 7;
+        let stylesArray = ['Vegetarian', 'Affordable', 'Cosy', 'Romantic', 'Business', 'Pub', 'Steakhouse'];
+
         let req = this.state.request;
         req.timestamp = Date.now();
+        req.tags = [];
+        for (i = 0; i < nrOfStyles; i++)
+            if (this.state.isPressed[i] == true)
+                req.tags.push(stylesArray[i]);
+
         this.db.collection("requests").add(req)
-        .then(() => {
-            alert("Request has been added");
-        })
-        .catch(err => {
-            alert(err);
-        })
+            .then(() => {
+                alert("Request has been added");
+            })
+            .catch(err => {
+                alert(err);
+            })
     }
 
     countPeople = (val) => {
@@ -112,11 +122,76 @@ export default class FirstPage extends Component {
         })
     }
 
-    render() {
+    _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
 
+    selectItem = (index) => {
+        const arr = [...this.state.isPressed]
+        arr[index] = !arr[index]
+        this.setState({
+            isPressed: arr
+        })
+    }
+
+    getRadioButton = (index) => {
+        if (this.state.isPressed[index] == false)
+            return (
+                <TouchableOpacity onPress={() => this.selectItem(index)} style={{ padding: 10 }}>
+                    <Icon name="ios-radio-button-off" size={30} color="#A01F5B" />
+                </TouchableOpacity>
+            )
+        else
+            return (
+                <TouchableOpacity onPress={() => this.selectItem(index)} style={{ padding: 10 }}>
+                    <Icon name="ios-radio-button-on" size={30} color="#A01F5B" />
+                </TouchableOpacity>
+            )
+    }
+
+    render() {
         return (
             <View style={styles.pageContainer}>
-                <PositionProvider getPosition={this.updatePosition}/>
+                <Modal
+                    isVisible={this.state.isModalVisible}
+                    onBackdropPress={() => this.setState({ isModalVisible: false })}
+                    onBackButtonPress={() => this.setState({ isModalVisible: false })}
+                    hideModalContentWhileAnimating={true}
+                    style={{ alignItems: 'center' }}
+                >
+                    <View style={styles.modalStyle}>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Vegetarian</Text>
+                            {this.getRadioButton(0)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Affordable</Text>
+                            {this.getRadioButton(1)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Cosy</Text>
+                            {this.getRadioButton(2)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Romantic</Text>
+                            {this.getRadioButton(3)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Business</Text>
+                            {this.getRadioButton(4)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Pub</Text>
+                            {this.getRadioButton(5)}
+                        </View>
+                        <View style={styles.modalContent}>
+                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Steakhouse</Text>
+                            {this.getRadioButton(6)}
+                        </View>
+                        <TouchableOpacity onPress={this._toggleModal}>
+                            <Text style={{ fontSize: 20, fontWeight: 'bold', padding: 10 }}>Done</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+                <PositionProvider getPosition={this.updatePosition} />
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/food3.gif')} style={styles.imageStyle} />
                 </View>
@@ -162,9 +237,9 @@ export default class FirstPage extends Component {
                                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}> {this.state.request.maxDistance}km </Text>
                             </View>
                         </View>
-                        <View style={styles.counterInputContainer}>
+                        <TouchableOpacity style={styles.counterInputContainer} onPress={this._toggleModal}>
                             <View style={styles.counterContainer}>
-                            <View style={{ width: 24.8 }} />
+                                <View style={{ width: 24.8 }} />
                                 <View style={{ alignItems: 'center', width: 100 }}>
                                     <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Style</Text>
                                 </View>
@@ -173,8 +248,9 @@ export default class FirstPage extends Component {
                             <View style={{ alignItems: 'center', width: 80 }}>
                                 <Icon name="ios-arrow-up" size={30} color="#A01F5B" />
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
+
                 </View>
 
 
@@ -257,7 +333,7 @@ const styles = StyleSheet.create({
     },
     inputsContainer: {
         margin: 40,
-        backgroundColor: '#d7dae0',
+        backgroundColor: '#eff4f7',
         width: '70%',
         height: '70%',
         borderRadius: 25,
@@ -282,5 +358,18 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    modalStyle: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#eff4f7',
+        borderRadius: 20,
+        width: '77.5%'
+    },
+    modalContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '90%'
     }
 })
