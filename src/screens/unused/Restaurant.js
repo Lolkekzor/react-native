@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import firebase from 'react-native-firebase';
 
-import Button from '../components/Button';
+import Button from '../../components/Button';
 
 export default class Restaurant extends Component {
     constructor() {
