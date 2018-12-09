@@ -9,7 +9,43 @@ import RestaurantRequests from "./src/screens/RestaurantRequests";
 Navigation.registerComponent('screens.RestaurantRequests', () => RestaurantRequests);
 
 export default () => {
-  Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: "screens.RestaurantRequests",
+              options: {
+                topBar: {
+                  visible: true,
+                  title: {
+                    text: 'Restaurant',
+                    alignment: 'center',
+                    fontSize: 26,
+                    fontWeight: "bold",
+                    color: 'white',
+                    fontFamily: 'Helvetica',
+                  },
+                  backButton: {
+                    visible: true,
+                    color: "white"
+                  },
+                  background: {
+                    color: '#D01F5B'
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  });
+}
+
+/**
+Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setRoot({
       root: {
         component: {
@@ -18,45 +54,9 @@ export default () => {
       }
     })
   });
-}
-
-/**
-
 */
 
 /**
-Navigation.setRoot({
-  root: {
-    stack: {
-      children: [
-        {
-          component: {
-            name: "screens.RestaurantRequests",
-            options: {
-              topBar: {
-                visible: true,
-                title: {
-                  text: 'Restaurant',
-                  alignment: 'center',
-                  fontSize: 26,
-                  fontWeight: "bold",
-                  color: 'white',
-                  fontFamily: 'Helvetica',
-                },
-                backButton: {
-                  visible: true,
-                  color: "white"
-                },
-                background: {
-                  color: '#D01F5B'
-                }
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
-});
+
 
 */
