@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Modal from "react-native-modal";
 import firebase from 'react-native-firebase';
+import FirstPageModal from '../components/FirstPageModal/FirstPageModal.js';
 
 import PositionProvider from '../components/function/PositionProvider';
 
@@ -122,8 +122,7 @@ export default class FirstPage extends Component {
         })
     }
 
-    _toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
-
+    toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
     selectItem = (index) => {
         const arr = [...this.state.isPressed]
         arr[index] = !arr[index]
@@ -131,66 +130,13 @@ export default class FirstPage extends Component {
             isPressed: arr
         })
     }
-
-    getRadioButton = (index) => {
-        if (this.state.isPressed[index] == false)
-            return (
-                <TouchableOpacity onPress={() => this.selectItem(index)} style={{ padding: 10 }}>
-                    <Icon name="ios-radio-button-off" size={30} color="#A01F5B" />
-                </TouchableOpacity>
-            )
-        else
-            return (
-                <TouchableOpacity onPress={() => this.selectItem(index)} style={{ padding: 10 }}>
-                    <Icon name="ios-radio-button-on" size={30} color="#A01F5B" />
-                </TouchableOpacity>
-            )
-    }
-
+    
     render() {
         return (
             <View style={styles.pageContainer}>
-                <Modal
-                    isVisible={this.state.isModalVisible}
-                    onBackdropPress={() => this.setState({ isModalVisible: false })}
-                    onBackButtonPress={() => this.setState({ isModalVisible: false })}
-                    hideModalContentWhileAnimating={true}
-                    style={{ alignItems: 'center' }}
-                >
-                    <View style={styles.modalStyle}>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Vegetarian</Text>
-                            {this.getRadioButton(0)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Affordable</Text>
-                            {this.getRadioButton(1)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Cosy</Text>
-                            {this.getRadioButton(2)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Romantic</Text>
-                            {this.getRadioButton(3)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Business</Text>
-                            {this.getRadioButton(4)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Pub</Text>
-                            {this.getRadioButton(5)}
-                        </View>
-                        <View style={styles.modalContent}>
-                            <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Steakhouse</Text>
-                            {this.getRadioButton(6)}
-                        </View>
-                        <TouchableOpacity onPress={this._toggleModal}>
-                            <Text style={{ fontSize: 20, fontWeight: 'bold', padding: 10 }}>Done</Text>
-                        </TouchableOpacity>
-                    </View>
-                </Modal>
+                
+                <FirstPageModal isModalVisible={this.state.isModalVisible} isPressed={this.state.isPressed} selectItem={(index) => this.selectItem(index)} toggleModal={this.toggleModal} />
+
                 <PositionProvider getPosition={this.updatePosition} />
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/food3.gif')} style={styles.imageStyle} />
@@ -237,7 +183,7 @@ export default class FirstPage extends Component {
                                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}> {this.state.request.maxDistance}km </Text>
                             </View>
                         </View>
-                        <TouchableOpacity style={styles.counterInputContainer} onPress={this._toggleModal}>
+                        <TouchableOpacity style={styles.counterInputContainer} onPress={this.toggleModal}>
                             <View style={styles.counterContainer}>
                                 <View style={{ width: 24.8 }} />
                                 <View style={{ alignItems: 'center', width: 100 }}>
@@ -358,18 +304,5 @@ const styles = StyleSheet.create({
         padding: 0,
         alignItems: 'center',
         justifyContent: 'center'
-    },
-    modalStyle: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#eff4f7',
-        borderRadius: 20,
-        width: '77.5%'
-    },
-    modalContent: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '90%'
     }
 })
