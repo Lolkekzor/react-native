@@ -17,7 +17,7 @@ export default () => {
         children: [
           {
             component: {
-              name: "screens.FirstPage",
+              name: "screens.BrowseOffers", /// Change to  name: "screens.FirstPage" after debug
               options: {
                 topBar: {
                   visible: false,

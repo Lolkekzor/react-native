@@ -7,9 +7,10 @@ import { Navigation } from 'react-native-navigation';
 import PositionProvider from '../components/function/PositionProvider';
 
 export default class FirstPage extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.db = firebase.firestore();
+        console.log(this.props);
     }
 
     state = {

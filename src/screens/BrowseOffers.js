@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import firebase from 'react-native-firebase';
 import MapView from 'react-native-maps';
 
 import PositionProvider from '../components/function/PositionProvider';
+import Offer from '../components/Offer';
 
 export default class BrowseOffers extends Component {
     constructor() {
@@ -55,8 +56,7 @@ export default class BrowseOffers extends Component {
             <View style={styles.pageContainer}>
                 <PositionProvider getPosition={this.updatePosition}/>
                 <MapView
-                     // remove if not using Google Maps
-                    style={{width: "100%", height: 300}}
+                    style={{width: "100%", height: Dimensions.get('window').height / 4}}
                     region={{
                         latitude: this.state.currentPos.latitude,
                         longitude: this.state.currentPos.longitude,
@@ -66,6 +66,13 @@ export default class BrowseOffers extends Component {
                 >
                     <MapView.Marker coordinate={this.state.currentPos}/>
                 </MapView>
+                <Offer 
+                    source={require('../assets/kfc.png')}
+                    name={"KFC Iulius Mall"}
+                    type={"American, Fast-Food"}
+                    distance={1600}
+                    timestamp={Date.now()}
+                />
             </View>
         );
     };

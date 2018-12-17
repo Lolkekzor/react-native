@@ -36,16 +36,19 @@ export default class GetOffers extends Component {
                     }
                     this.setState({initialPos: initPos});
                     this.props.getPosition(initPos);
-                }, error => alert(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+                }, error => alert(error.message), { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 });
                 this.watchID = Geolocation.watchPosition(pos => {
                     console.log(pos);
-                    let crtPos = {
-                        latitude: pos.coords.latitude,
-                        longitude: pos.coords.longitude
+                    if (pos.coords.accuracy < 200) {
+                        let crtPos = {
+                            latitude: pos.coords.latitude,
+                            longitude: pos.coords.longitude
+                        }
+                        this.setState({currentPos: crtPos});
+                        this.props.getPosition(this.state.initialPos, crtPos);
                     }
-                    this.setState({currentPos: crtPos});
-                    this.props.getPosition(this.state.initialPos, crtPos);
-                }); 
+                    
+                }, err => alert(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 }); 
             } else {
                 console.log("Permission denied")
             }
