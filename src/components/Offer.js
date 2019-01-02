@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 
-import ProgressBarAnimated from 'react-native-progress-bar-animated';
-
 export default class Offer extends Component {
 
     constructor(props) {
@@ -59,16 +57,7 @@ export default class Offer extends Component {
                     <Text style={styles.distanceText}>
                         {parseInt(this.props.distance / 1000)}.{parseInt(this.props.distance / 100 % 10)} km
                     </Text>
-                    <ProgressBarAnimated
-                        width={80}
-                        height={15}
-                        value={this.state.progressBarPercentage}
-                        maxValue={100}
-                        backgroundColorOnComplete="#E91E63"
-                        backgroundColor="#E91E63"
-                        borderColor="#E91E63" 
-                        borderRadius={10}
-                    />
+                    {/* PROGRESS BAR HERE */}
                     <Text>
                         {this.toTimeDisplay(120000 - (Date.now() - this.props.timestamp))}
                     </Text>

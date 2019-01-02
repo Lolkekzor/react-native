@@ -51,7 +51,7 @@ export default class RestaurantRequests extends Component {
                 <FlatList
                     contentContainerStyle={styles.requestsContainer}
                     data={this.state.requests}
-                    renderItem={({item}) => <Request name="Anonymous" nrPeople={item.nrPeople}/>}
+                    renderItem={({item}) => <Request name="Anonymous" nrPeople={item.nrPeople} customerId={item.customerId}/>}
                 />
             </View>
         )

@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import Button from './Button';
 
 export default class Request extends Component {
+
+    constructor(props) {
+        super(props);
+        this.db = firebase.firestore();
+    }
 
     state = {
         touched: false
     }
 
     handlePress = () => {
+        offer = {};
+        offer.timestamp = Date.now();
+        offer.customer = this.props.customerId;
+        this.db.collection("offers").add(offer);
         this.setState({
             touched: true
         })
@@ -24,7 +34,7 @@ export default class Request extends Component {
         if (this.state.touched) {
             btn = (
                 <View style={styles.sentOffer}>
-                    <Text style={{}}>
+                    <Text style={{color: "#FFFFFF"}}>
                         Ofertă trimisă!
                     </Text>
                 </View>

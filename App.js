@@ -9,6 +9,8 @@ import RestaurantRequests from "./src/screens/RestaurantRequests";
 Navigation.registerComponent('screens.RestaurantRequests', () => RestaurantRequests);
 import BrowseOffers from "./src/screens/BrowseOffers";
 Navigation.registerComponent('screens.BrowseOffers', () => BrowseOffers);
+import ChooseLaunch from "./src/screens/ChooseLaunch";
+Navigation.registerComponent('screens.ChooseLaunch', () => ChooseLaunch);
 
 export default () => {
   Navigation.setRoot({
@@ -17,7 +19,7 @@ export default () => {
         children: [
           {
             component: {
-              name: "screens.BrowseOffers", /// Change to  name: "screens.FirstPage" after debug
+              name: "screens.ChooseLaunch", /// Change to  name: "screens.FirstPage" after debug
               options: {
                 topBar: {
                   visible: false,
