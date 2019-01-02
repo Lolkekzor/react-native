@@ -7,21 +7,14 @@ import PositionProvider from '../components/function/PositionProvider';
 import Offer from '../components/Offer';
 
 export default class BrowseOffers extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.db = firebase.firestore();
+        this.state.currentPos = this.props.location;
+        this.state.timeAtLoad = Date.now();
     }
 
-    state = {
-        initialPos: {
-            latitude: 0,
-            longitude: 0
-        },
-        currentPos: {
-            latitude: 0,
-            longitude: 0
-        }
-    }
+    state = {}
 
     componentDidMount() {
         this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
@@ -43,10 +36,9 @@ export default class BrowseOffers extends Component {
         this.unsubscribe();
     }
 
-    updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
+    updatePosition = (position) => {
         this.setState({
-            initialPos: initPos,
-            currentPos: crtPos
+            currentPos: position
         })
     }
 
@@ -71,7 +63,7 @@ export default class BrowseOffers extends Component {
                     name={"KFC Iulius Mall"}
                     type={"American, Fast-Food"}
                     distance={1600}
-                    timestamp={Date.now()}
+                    timestamp={this.state.timeAtLoad}
                 />
             </View>
         );

@@ -9,13 +9,10 @@ export default class GetOffers extends Component {
     }
 
     state = {
-        initialPos: {
+        position: {
             latitude: 0,
-            longitude: 0
-        },
-        currentPos: {
-            latitude: 0,
-            longitude: 0
+            longitude: 0,
+            accuracy: 999999,
         }
     }
 
@@ -30,25 +27,27 @@ export default class GetOffers extends Component {
         ).then(granted => {
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                 Geolocation.getCurrentPosition(pos => {
-                    let initPos = {
+                    let position = {
                         latitude: pos.coords.latitude,
-                        longitude: pos.coords.longitude
+                        longitude: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy
                     }
-                    this.setState({initialPos: initPos});
-                    this.props.getPosition(initPos);
+                    this.setState({position: position});
+                    this.props.getPosition(position);
                 }, error => alert(error.message), { enableHighAccuracy: true, timeout: 3000, maximumAge: 1000 });
                 this.watchID = Geolocation.watchPosition(pos => {
                     console.log(pos);
-                    if (pos.coords.accuracy < 200) {
-                        let crtPos = {
+                    if (pos.coords.accuracy < this.state.position.accuracy + 100) {
+                        let position = {
                             latitude: pos.coords.latitude,
-                            longitude: pos.coords.longitude
+                            longitude: pos.coords.longitude,
+                            accuracy: pos.coords.accuracy
                         }
-                        this.setState({currentPos: crtPos});
-                        this.props.getPosition(this.state.initialPos, crtPos);
+                        this.setState({position: position});
+                        this.props.getPosition(position);
                     }
                     
-                }, err => alert(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 }); 
+                }, err => alert(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 0 }); 
             } else {
                 console.log("Permission denied")
             }
@@ -60,10 +59,6 @@ export default class GetOffers extends Component {
 
     componentWillUnmount() {
         Geolocation.clearWatch(this.watchID);
-    }
-
-    componentDidUpdate() {
-        
     }
 
     render() {

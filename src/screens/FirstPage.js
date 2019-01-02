@@ -15,10 +15,6 @@ export default class FirstPage extends Component {
 
     state = {
         currentUser: null,
-        initialPos: {
-            latitude: 0,
-            longitude: 0
-        },
         currentPos: {
             latitude: 0,
             longitude: 0
@@ -72,15 +68,12 @@ export default class FirstPage extends Component {
         this.unsubscribe();
     }
 
-    updatePosition = (initPos, crtPos = {latitude: 0, longitude: 0}) => {
+    updatePosition = (position) => {
         this.setState({
-            initialPos: initPos,
-            currentPos: crtPos
-        })
-        this.setState({
+            currentPos: position,
             request: {
                 ...this.state.request,
-                pos: this.state.currentPos
+                pos: this.state.position
             }
         })
     }
