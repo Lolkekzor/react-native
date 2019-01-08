@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, FlatList } from 'react-native';
 import firebase from 'react-native-firebase';
 import MapView from 'react-native-maps';
 
@@ -14,10 +14,12 @@ export default class BrowseOffers extends Component {
         this.state.timeAtLoad = Date.now();
     }
 
-    state = {}
+    state = {
+        offers: []
+    }
 
     componentDidMount() {
-        this.unsubscribe = firebase.auth().onAuthStateChanged(user => {
+        this.unsubscribeAuthListener = firebase.auth().onAuthStateChanged(user => {
             if (user) {
                 this.setState({
                     currentUser: user,
@@ -29,11 +31,29 @@ export default class BrowseOffers extends Component {
             } else {
                 firebase.auth().signInAnonymously();
             }
+            
         })
+
+        this.unsubscribeSnapshotListener = this.db.collection("offers").onSnapshot(this.onNewOffers);
+    }
+
+    onNewOffers = (offersSnapshot) => {
+        const offers = [];
+        console.log("Hey, what the fuck.");
+        offersSnapshot.forEach(off => {
+            
+            offers.push({
+                key: off.id,
+                timestamp: off.data().timestamp,
+            }); 
+        }) 
+
+        this.setState({offers}); 
     }
 
     componentWillUnmount() {
-        this.unsubscribe();
+        this.unsubscribeAuthListener();
+        this.unsubscribeSnapshotListener();
     }
 
     updatePosition = (position) => {
@@ -58,12 +78,18 @@ export default class BrowseOffers extends Component {
                 >
                     <MapView.Marker coordinate={this.state.currentPos}/>
                 </MapView>
-                <Offer 
-                    source={require('../assets/kfc.png')}
-                    name={"KFC Iulius Mall"}
-                    type={"American, Fast-Food"}
-                    distance={1600}
-                    timestamp={this.state.timeAtLoad}
+                <FlatList
+                    contentContainerStyle={styles.offersContainer}
+                    data={this.state.offers}
+                    renderItem={({item}) => 
+                        <Offer 
+                            source={require('../assets/kfc.png')}
+                            name={"KFC Iulius Mall"}
+                            type={"American, Fast-Food"}
+                            distance={1600}
+                            timestamp={item.timestamp}
+                        />
+                    }
                 />
             </View>
         );
@@ -71,5 +97,13 @@ export default class BrowseOffers extends Component {
 }
 
 const styles = StyleSheet.create({
-    
+    pageContainer: {
+        flex: 1,
+        backgroundColor: "#E91E63",
+        alignItems: 'center',
+    },
+    offersContainer: {
+        width: "100%",
+        alignItems: "center"
+    }
 })

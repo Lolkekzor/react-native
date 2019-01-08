@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
 import firebase from 'react-native-firebase';
+import { Navigation } from 'react-native-navigation';
 
 import Request from '../components/Request';
 import Button from '../components/Button';
 
 export default class RestaurantRequests extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.db = firebase.firestore();
     }
 
@@ -37,6 +38,26 @@ export default class RestaurantRequests extends Component {
         this.setState({requests}); 
     }
 
+    modifyOffers = () => {
+        Navigation.push(this.props.componentId, {
+            component: {
+                name: 'screens.ModifyOffer',
+                
+                options: {
+                    topBar: {
+                        title: {
+                            text: "Oferte",
+                        },
+                        background: {
+                            color: '#D01F5B'
+                        },
+                        animate: false
+                    }
+                }
+            }
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -44,7 +65,7 @@ export default class RestaurantRequests extends Component {
                     <Text style={{ fontSize: 26, color: 'white'}}>
                         Cereri
                     </Text>
-                    <Button style={styles.modifyButton} textColor="#FFFFFF">
+                    <Button style={styles.modifyButton} onPress={this.modifyOffers} textColor="#FFFFFF">
                         Modifică Oferte
                     </Button>
                 </View>

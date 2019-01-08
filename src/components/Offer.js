@@ -11,7 +11,7 @@ export default class Offer extends Component {
     }
 
     componentDidMount() {
-        this.interval = setInterval(() => this.setState({ diff: parseInt((120000 - (Date.now() - this.props.timestamp)) / 10 / 120) }), 250);
+        this.interval = setInterval(() => this.setState({ diff: parseInt((120000 - (Date.now() - this.props.timestamp)) / 10 / 120) }), 1000);
     }
 
     componentWillUnmount() {
@@ -69,6 +69,7 @@ export default class Offer extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        width: "100%",
         flexDirection: 'row',
         height: 90
     },

@@ -11,6 +11,8 @@ import BrowseOffers from "./src/screens/BrowseOffers";
 Navigation.registerComponent('screens.BrowseOffers', () => BrowseOffers);
 import ChooseLaunch from "./src/screens/ChooseLaunch";
 Navigation.registerComponent('screens.ChooseLaunch', () => ChooseLaunch);
+import ModifyOffer from "./src/screens/ModifyOffer";
+Navigation.registerComponent('screens.ModifyOffer', () => ModifyOffer);
 
 export default () => {
   Navigation.setRoot({
