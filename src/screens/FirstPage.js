@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image, Dimensions } from 'rea
 import Icon from 'react-native-vector-icons/Ionicons';
 import firebase from 'react-native-firebase';
 import { Navigation } from 'react-native-navigation';
+import FirstPageModal from '../components/FirstPageModal/FirstPageModal.js';
 
 import PositionProvider from '../components/function/PositionProvider';
 
@@ -32,9 +33,10 @@ export default class FirstPage extends Component {
                 latitude: 0,
                 longitude: 0
             },
-            nrPeople: 1,
-            tags: ["Vegetarian", "Affordable", "Cosy"]
-        }
+            nrPeople: 1
+        },
+        isModalVisible: false,
+        isPressed: [0, 0, 0, 0, 0, 0, 0]
     }
 
     onLayout = (e) => {
@@ -79,8 +81,16 @@ export default class FirstPage extends Component {
     }
 
     sendRequest = () => {
+        let nrOfStyles = 7;
+        let stylesArray = ['Vegetarian', 'Affordable', 'Cosy', 'Romantic', 'Business', 'Pub', 'Steakhouse'];
+
         let req = this.state.request;
         req.timestamp = Date.now();
+        req.tags = [];
+        for (i = 0; i < nrOfStyles; i++)
+            if (this.state.isPressed[i] == true)
+                req.tags.push(stylesArray[i]);
+
         this.db.collection("requests").add(req)
         .then(() => {
             Navigation.push(this.props.componentId, {
@@ -114,11 +124,22 @@ export default class FirstPage extends Component {
         })
     }
 
+    toggleModal = () => this.setState({ isModalVisible: !this.state.isModalVisible });
+    selectItem = (index) => {
+        const arr = [...this.state.isPressed]
+        arr[index] = !arr[index]
+        this.setState({
+            isPressed: arr
+        })
+    }
+    
     render() {
-
         return (
             <View style={styles.pageContainer}>
-                <PositionProvider getPosition={this.updatePosition}/>
+                
+                <FirstPageModal isModalVisible={this.state.isModalVisible} isPressed={this.state.isPressed} selectItem={(index) => this.selectItem(index)} toggleModal={this.toggleModal} />
+
+                <PositionProvider getPosition={this.updatePosition} />
                 <View style={styles.imageContainer}>
                     <Image source={require('../assets/food3.gif')} style={styles.imageStyle} />
                 </View>
@@ -164,9 +185,9 @@ export default class FirstPage extends Component {
                                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}> {this.state.request.maxDistance}km </Text>
                             </View>
                         </View>
-                        <View style={styles.counterInputContainer}>
+                        <TouchableOpacity style={styles.counterInputContainer} onPress={this.toggleModal}>
                             <View style={styles.counterContainer}>
-                            <View style={{ width: 24.8 }} />
+                                <View style={{ width: 24.8 }} />
                                 <View style={{ alignItems: 'center', width: 100 }}>
                                     <Text style={{ fontSize: 20, fontWeight: 'normal' }}>Style</Text>
                                 </View>
@@ -175,8 +196,9 @@ export default class FirstPage extends Component {
                             <View style={{ alignItems: 'center', width: 80 }}>
                                 <Icon name="ios-arrow-up" size={30} color="#A01F5B" />
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     </View>
+
                 </View>
 
 
@@ -259,7 +281,7 @@ const styles = StyleSheet.create({
     },
     inputsContainer: {
         margin: 40,
-        backgroundColor: '#d7dae0',
+        backgroundColor: '#eff4f7',
         width: '70%',
         height: '70%',
         borderRadius: 25,
